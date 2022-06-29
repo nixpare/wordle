@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Nix Wordle - Indovina la parola (Wordle Italiano)</title>
+    <link rel="alternate" hreflang="en" href="/en">
+    <link rel="alternate" hreflang="x-default" href="/en">
+    <meta name="description" content="Gioca a Wordle in italiano! Indovina una parola segreta ogni volta che vuoi, quante volte vuoi! Mantieni alte le tue statistiche e cimentati anche nella versione in inglese">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://wordle.nixpare.com/assets/img/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#3e1ad6">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#ffffff">
+    <script src="https://kit.fontawesome.com/39c518750e.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="/assets/js/index.js" defer></script>
+</head>
+
+<body>
+    <header class="d-flex justify-content-between align-items-center">
+        <div class="d-flex flex-column align-items-end">
+            <h1>Nix Wordle</h1>
+            <h6>By NixPare</h6>
+        </div>
+        <div class="d-flex align-items-center button-wrapper">
+            <a class="btn" href="/en">EN</a>
+            <button id="openHelp" class="btn" type="button">
+                <i class="fa-solid fa-question"></i>
+            </button>
+            <div class="icon-menu">
+                <button class="btn" type="button">
+                    <i class="fa-solid fa-user"></i>
+                </button>
+                <ul>
+                    <li><button name="openStats" class="btn" type="button">
+                        <i class="fa-solid fa-chart-bar"></i>
+                    </button></li>
+                    <li><button class="btn darkmode-switch" type="button">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </button></li>
+                    <li><a class="btn" href="/logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="fullscreen-panes hidden">
+            <div class="pane-wrapper">
+                <button class="btn close" type="button" onclick="closePanes()">
+                    <i class="fa fa-close"></i>
+                </button>
+                <div class="pane errors hidden">
+                    <p class="title">Errore</p>
+                    <p class="message"></p>
+                </div>
+                <div class="pane help hidden">
+                    <h2>Benvenuto su Nix Wordle!</h2>
+                    <p>Questa è una rivisitazione del gioco <a href="https://www.nytimes.com/games/wordle/index.html" target="_blank">Wordle</a> ma tutta in italiano e con una nuova parola ogni volta che si aggiorna la pagina!</p>
+                    <p>Lo scopo del gioco è indovinare la parola segreta in almeno 6 tentativi</p>
+                    <h3><i class="fa fa-trophy"></i>Istruzioni</h3>
+                    <p>Se siete su un dispositivo touch basterà <b>cliccare sulla griglia</b> e comparirà la tastiera, quindi scrivere le 5 lettere (potete cancellarle se sbagliate) e poi premere il tasto Invio per far controllare il vostro tentativo</p>
+                    <p><b>ATTENZIONE</b>: la parola scelta come tentativo deve esistere, altrimenti non verrà approvata e dovrete cancellare la riga e riprovare. L'unica eccezione è <b>l'ultimo tentativo</b>, quindi attenti a non sbagliarlo!</p>
+                    <p>Inoltre ci possono essere da indovinare delle parole con gli <b>accenti</b>, ma non preoccupatevi, le lettere "normali" valgono anche per gli accenti!</p>
+                    <h3><i class="fa fa-trophy"></i>Regole</h3>
+                    <p>Riempire le 5 caselle, poi premere Invio. Inizierà quindi l'animazione di controllo:</p>
+                    <div>
+                        <div class="letter wrong">
+                            <p>W</p>
+                        </div>
+                        <p>Se la lettera sarà colorata di <b class="grigio">grigio</b> allora vuol dire che non è presente nella parola da indovinare </p>
+                    </div>
+                    <div>
+                        <div class="letter close">
+                            <p>W</p>
+                        </div>
+                        <p>Se la lettera sarà colorata di <b class="giallo">giallo</b> allora vuol dire che è presente nella parola da indovinare ma non in quella posizione</p>
+                    </div>
+                    <div>
+                        <div class="letter correct">
+                            <p>W</p>
+                        </div>
+                        <p>Se la lettera sarà colorata di <b class="verde">verde</b> allora vuol dire che è presente nella parola da indovinare esattamente in quella posizione</p>
+                    </div>
+                </div>
+                <div class="pane stats hidden">
+                    <h3>Statistiche</h3>
+                    <div class="scores">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="score" name="played">0</p>
+                            <p class="score" name="wins">0</p>
+                            <p class="score" name="streak">0</p>
+                            <p class="score" name="maxStreak">0</p>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p>Giocate</p>
+                            <p>% Vinte</p>
+                            <p>Combo Corrente</p>
+                            <p>Combo Massima</p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h4>Storico</h4>
+                        <p class="total">(tot: <b></b>)</p>
+                    </div>
+                    <div class="d-md-flex justify-content-md-center align-items-md-center">
+                        <div class="d-flex align-items-center graph">
+                            <div class="num-col">
+                                <p>1</p>
+                                <p>2</p>
+                                <p>3</p>
+                                <p>4</p>
+                                <p>5</p>
+                                <p>6</p>
+                            </div>
+                            <div class="bars">
+                                <div class="d-flex align-items-center bar-wrapper">
+                                    <div class="bar"></div>
+                                    <p>0</p>
+                                </div>
+                                <div class="d-flex align-items-center bar-wrapper">
+                                    <div class="bar"></div>
+                                    <p>0</p>
+                                </div>
+                                <div class="d-flex align-items-center bar-wrapper">
+                                    <div class="bar"></div>
+                                    <p>0</p>
+                                </div>
+                                <div class="d-flex align-items-center bar-wrapper">
+                                    <div class="bar"></div>
+                                    <p>0</p>
+                                </div>
+                                <div class="d-flex align-items-center bar-wrapper">
+                                    <div class="bar"></div>
+                                    <p>0</p>
+                                </div>
+                                <div class="d-flex align-items-center bar-wrapper">
+                                    <div class="bar"></div>
+                                    <p>0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container d-flex gap-3 justify-content-center align-items-center game-menu result hidden">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <p class="excl">Spione!</p>
+                <p class="solution">Cosa cerchi nel codice?</p>
+                <div>
+                    <button name="openStats" class="btn neon-btn" type="button">
+                        Statistiche<i class="fa fa-bar-chart"></i>
+                    </button>
+                    <a class="btn neon-btn" href="/?start">
+                        Rigioca<i class="fa fa-rotate-left"></i>
+                    </a>
+                </div>
+            </div>
+            <h3>Wordle in Italiano</h3>
+        </div>
+        <div class="container d-flex gap-5 flex-column align-items-center justify-content-center game-menu start-game">
+            <h4>Inizia una nuova partita!</h4>
+            <button name="startButton" class="btn neon-btn" type="button">
+                Gioca<i class="fa fa-play"></i>
+            </button>
+            <button name="openStats" class="btn neon-btn" type="button">
+                Statistiche<i class="fa fa-bar-chart"></i>
+            </button>
+        </div>
+        <div class="container d-flex gap-5 flex-column align-items-center justify-content-center game-menu resume-game d-none">
+            <h4>Hai una partita non terminata!</h4>
+            <div class="d-flex align-items-center justify-content-center">
+                <button id="resumeButton" class="btn neon-btn" type="button">
+                    Riprendi<i class="fa fa-rotate-left"></i>
+                </button>
+                <button name="startButton" class="btn neon-btn" type="button">
+                    Nuova Partita<i class="fa fa-play"></i>
+                </button>
+            </div>
+            <button name="openStats" class="btn neon-btn" type="button">
+                Statistiche<i class="fa fa-bar-chart"></i>
+            </button>
+        </div>
+        <div class="container d-flex align-items-center justify-content-center loading d-none">
+            <div class="flip-to-square-random">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+        </div>
+        <div class="container d-flex flex-column justify-content-center align-items-center grid d-none">
+            <div class="word-wrapper">
+                <div class="d-flex justify-content-center align-items-center word">
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center word">
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center word">
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center word">
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center word">
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center word">
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                    <div class="letter"></div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-center keyboard d-none">
+            <div class="kb-row">
+                <div id="q" class="key">Q</div>
+                <div id="w" class="key">W</div>
+                <div id="e" class="key">E</div>
+                <div id="r" class="key">R</div>
+                <div id="t" class="key">T</div>
+                <div id="y" class="key">Y</div>
+                <div id="u" class="key">U</div>
+                <div id="i" class="key">I</div>
+                <div id="o" class="key">O</div>
+                <div id="p" class="key">P</div>
+            </div>
+            <div class="kb-row">
+                <div id="a" class="key">A</div>
+                <div id="s" class="key">S</div>
+                <div id="d" class="key">D</div>
+                <div id="f" class="key">F</div>
+                <div id="g" class="key">G</div>
+                <div id="h" class="key">H</div>
+                <div id="j" class="key">J</div>
+                <div id="k" class="key">K</div>
+                <div id="l" class="key">L</div>
+            </div>
+            <div class="kb-row">
+                <div id="enter" class="key"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-return-left">
+                    <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"></path>
+                </svg></div>
+                <div id="z" class="key">Z</div>
+                <div id="x" class="key">X</div>
+                <div id="c" class="key">C</div>
+                <div id="v" class="key">V</div>
+                <div id="b" class="key">B</div>
+                <div id="n" class="key">N</div>
+                <div id="m" class="key">M</div>
+                <div id="backspace" class="key"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em" fill="currentColor">
+                    <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
+                    <path d="M576 384C576 419.3 547.3 448 512 448H205.3C188.3 448 172 441.3 160 429.3L9.372 278.6C3.371 272.6 0 264.5 0 256C0 247.5 3.372 239.4 9.372 233.4L160 82.75C172 70.74 188.3 64 205.3 64H512C547.3 64 576 92.65 576 128V384zM271 208.1L318.1 256L271 303C261.7 312.4 261.7 327.6 271 336.1C280.4 346.3 295.6 346.3 304.1 336.1L352 289.9L399 336.1C408.4 346.3 423.6 346.3 432.1 336.1C442.3 327.6 442.3 312.4 432.1 303L385.9 256L432.1 208.1C442.3 199.6 442.3 184.4 432.1 175C423.6 165.7 408.4 165.7 399 175L352 222.1L304.1 175C295.6 165.7 280.4 165.7 271 175C261.7 184.4 261.7 199.6 271 208.1V208.1z"></path>
+                </svg></div>
+            </div>
+        </div>
+    </main>
+    <footer class="d-flex justify-content-center align-items-center flex-wrap">
+        <div class="d-flex justify-content-center align-items-center">
+            <p>Design by</p>
+            <a href="https://nixpare.com" target="_blank">NixPare</a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <p>email:</p>
+            <a href="mailto:support@nixpare.com">support@nixpare.com</a>
+        </div>
+    </footer>
+</body>
+
+</html>

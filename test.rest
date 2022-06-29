@@ -1,0 +1,63 @@
+GET http://localhost:8000/ HTTP/1.1
+###
+GET http://localhost:8000/login HTTP/1.1
+###
+GET http://localhost:8000/logout HTTP/1.1
+###
+GET http://localhost:8000/data HTTP/1.1
+###
+POST http://localhost:8000/check HTTP/1.1
+Content-Type: text/plain
+
+morti
+###
+POST http://localhost:8000/login HTTP/1.1
+Content-Type: application/json
+
+{
+	"email": "alessio.pareto@live.com",
+	"password": "Parex0920"
+}
+###
+POST http://localhost:8000/register HTTP/1.1
+Content-Type: application/json
+
+{
+	"email": "alessio.pareto00@gmail.com",
+	"password": "Parex0920",
+	"confirmPassword": "Parex0920"
+}
+###
+POST http://localhost:8000/data HTTP/1.1
+Content-Type: application/json
+
+{
+	"played": 0,
+	"wins": 0,
+	"streak": 0,
+	"maxStreak": 0,
+	"results": [0, 0, 0, 0, 0, 0],
+	"lastPlayed": 0,
+	"lastWon": 0,
+	"secret": "",
+	"tries": []
+}
+###
+
+GET http://localhost:8000/en/data HTTP/1.1
+###
+POST http://localhost:8000/en/data HTTP/1.1
+Content-Type: application/json
+
+{
+	"played": 0,
+	"wins": 0,
+	"streak": 0,
+	"maxStreak": 0,
+	"results": [0, 0, 0, 0, 0, 0],
+	"lastPlayed": 0,
+	"lastWon": 0,
+	"secret": "",
+	"tries": []
+}
+###

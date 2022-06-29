@@ -1,0 +1,7 @@
+{
+    "port": 8000,
+    "mongoDBURI": "mongodb://localhost:27017",
+    "mongoDBName": "wordle",
+    "mongoDBUserCollection": "user",
+    "cookieName": "user"
+}

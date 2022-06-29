@@ -1,0 +1,3 @@
+User-Agent: *
+
+Sitemap: https://wordle.nixpare.com/sitemap.xml

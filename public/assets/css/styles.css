@@ -377,6 +377,7 @@ body.dark .pane-wrapper {
   margin-bottom: 0;
   font-weight: 500;
   color: rgb(255, 45, 45);
+  text-align: center;
 }
 
 .help h2 {

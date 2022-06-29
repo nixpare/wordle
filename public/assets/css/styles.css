@@ -206,7 +206,7 @@ body.dark .letter.active {
 .button-wrapper .btn {
   width: 2em;
   height: 2em;
-  font-size: 1.2em;
+  font-size: clamp(1rem, 0.8rem + 1vw, 1.2rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,12 +221,6 @@ body.dark .letter.active {
 body.dark .button-wrapper .btn {
   background: var(--bs-dark);
   color: var(--main-color-light);
-}
-
-@media (max-width: 500px) {
-  .button-wrapper .btn {
-    font-size: 1em;
-  }
 }
 
 .button-wrapper .btn:hover {

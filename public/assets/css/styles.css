@@ -878,6 +878,7 @@ input {
 
 body.dark .input-wrapper > input {
   border: 2px solid #333;
+  color: #fff;
 }
 
 .input-wrapper > label {

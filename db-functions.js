@@ -56,10 +56,7 @@ class UserData {
 		 * the one used for the password)
 		 * @type {string}
 		 */
-		this.cookieValue = crypto.createHmac(
-			'sha256',
-			crypto.randomBytes(24).toString('base64')
-		).update(email).digest('base64')
+		this.cookieValue = generateNewCookie(email)
 		/**
 		 * Data holds the game statistics organized in a Map:
 		 *  + the keys of the map are strings and rapresent the language of the game (es: it, en)
@@ -74,6 +71,17 @@ class UserData {
 	}
 }
 module.exports.UserData = UserData
+
+/**
+ * @param {string} email
+ * @returns {string} CookieValue
+ */
+function generateNewCookie(email) {
+	return crypto.createHmac(
+		'sha256',
+		crypto.randomBytes(24).toString('base64')
+	).update(email).digest('base64')
+}
 
 /**
  * @param {string} email
@@ -119,6 +127,7 @@ module.exports.registerUser = registerUser
  */
 async function loginUser(email, password) {
 	let db = client.db(mongoDBName).collection(mongoDBUserCollection)
+	/** @type {UserData} */
 	let user = await db.findOne({ email: email })
 
 	if (!user) {
@@ -129,7 +138,13 @@ async function loginUser(email, password) {
 		return null
 	}
 
-	return user.cookieValue
+	let newCookieValue = generateNewCookie(email)
+	let res = await db.updateOne({ email: email }, { $set: { cookieValue: newCookieValue } })
+
+	if (!res.acknowledged) {
+		return null
+	}
+	return newCookieValue
 }
 module.exports.loginUser = loginUser
 

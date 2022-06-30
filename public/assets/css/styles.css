@@ -57,6 +57,36 @@ body.dark main {
   color: #fff;
 }
 
+.neon-btn {
+  border: .2em solid var(--main-color-dark);
+  border-radius: 15px;
+  color: var(--main-color-dark);
+  margin: 0 1em;
+  box-shadow: 0 0 10px var(--main-color-light), inset 0 0 10px var(--main-color-light),
+              0 0 20px 5px rgb(163, 218, 255), inset 0 0 20px rgb(163, 218, 255);
+}
+
+.neon-btn:hover {
+  color: var(--main-color-dark);
+  box-shadow: 0 0 10px 5px var(--main-color-light), inset 0 0 10px 5px var(--main-color-light);
+}
+
+body.dark .neon-btn {
+  border: .2em solid var(--main-color-light);
+  color: var(--main-color-light);
+  box-shadow: 0 0 10px 5px var(--main-color-light), inset 0 0 10px 5px var(--main-color-light);
+}
+
+body.dark .neon-btn:hover {
+  color: var(--main-color-light);
+  box-shadow: 0 0 10px var(--main-color-light), inset 0 0 10px var(--main-color-light),
+              0 0 20px 5px rgb(35, 186, 251), inset 0 0 20px rgb(35, 186, 251);
+}
+
+.neon-btn i {
+  margin-left: .4em;
+}
+
 .grid {
   position: relative;
 }
@@ -370,14 +400,26 @@ body.dark .pane-wrapper {
   font-size: 1.2em;
   margin-bottom: 0;
   font-weight: 600;
-  color: rgb(255, 45, 45);
+  color: #ff2d2d;
 }
 
 .errors .message {
   margin-bottom: 0;
   font-weight: 500;
-  color: rgb(255, 45, 45);
+  color: #ff2d2d;
   text-align: center;
+}
+
+.errors .btn, body.dark .errors .btn {
+  display: none;
+  margin-top: 1em;
+  color: #ff2d2d;
+  border-color: #ff2d2d;
+  box-shadow: 0 0 10px 5px #ff2d2d;
+}
+
+.fullscreen-panes.perma .errors .btn {
+  display: block;
 }
 
 .help h2 {
@@ -610,36 +652,6 @@ body.dark .stats .total > b {
 
 .start-game *, .resume-game * {
   font-size: 1.4rem;
-}
-
-.neon-btn {
-  border: .2em solid var(--main-color-dark);
-  border-radius: 15px;
-  color: var(--main-color-dark);
-  margin: 0 1em;
-  box-shadow: 0 0 10px var(--main-color-light), inset 0 0 10px var(--main-color-light),
-              0 0 20px 5px rgb(163, 218, 255), inset 0 0 20px rgb(163, 218, 255);
-}
-
-.neon-btn:hover {
-  color: var(--main-color-dark);
-  box-shadow: 0 0 10px 5px var(--main-color-light), inset 0 0 10px 5px var(--main-color-light);
-}
-
-body.dark .neon-btn {
-  border: .2em solid var(--main-color-light);
-  color: var(--main-color-light);
-  box-shadow: 0 0 10px 5px var(--main-color-light), inset 0 0 10px 5px var(--main-color-light);
-}
-
-body.dark .neon-btn:hover {
-  color: var(--main-color-light);
-  box-shadow: 0 0 10px var(--main-color-light), inset 0 0 10px var(--main-color-light),
-              0 0 20px 5px rgb(35, 186, 251), inset 0 0 20px rgb(35, 186, 251);
-}
-
-.neon-btn i {
-  margin-left: .4em;
 }
 
 /**

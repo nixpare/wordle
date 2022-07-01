@@ -1,4 +1,5 @@
 const express = require('express')
+const { StatusCodes } = require('http-status-codes')
 
 const wordPicks = new Map()
 wordPicks.set('it', require('./dictionaries/italian_dictionary_pick.json'))
@@ -58,14 +59,18 @@ function patternSearchList (pattern, dictionary) {
 function patternFillList (pattern, candidates, blackList, dictionary) {
     let list = []
     dictionary.forEach(w => {
-        let wCopy = ''
         for (let i = 0; i < pattern.length; i++) {
             if (pattern[i] === '_') {
-                wCopy += w[i]
                 continue
             }
 
             if (pattern[i] !== w[i]) {
+                return
+            }
+        }
+
+        for (let i = 0; i < w.length; i++) {
+            if (blackList.includes(w[i])) {
                 return
             }
         }
@@ -75,28 +80,23 @@ function patternFillList (pattern, candidates, blackList, dictionary) {
             candidatesCopy.push(candidate)
         })
 
-        loop: for (let i = 0; i < wCopy.length; i++) {
-            if (blackList.includes(wCopy[i])) {
-                return
+        for (let i = 0; i < w.length; i++) {
+            if (pattern[i] !== '_') {
+                continue
             }
 
             for (let j = 0; j < candidatesCopy.length; j++) {
-                if (candidatesCopy[j] === wCopy[i]) {
+                if (candidatesCopy[j] === w[i]) {
                     delete candidatesCopy[j]
                     candidatesCopy.sort()
                     candidatesCopy.pop()
-                    continue loop
                 }
             }
-
-            if (candidatesCopy.length === 0 || candidates.includes(wCopy[i])) {
-                continue
-            }
-            
-            return
         }
 
-        list.push(w)
+        if (candidatesCopy.length === 0) {
+            list.push(w)
+        }
     })
 
     return list

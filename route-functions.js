@@ -196,7 +196,7 @@ async function postLogin(req, res, lang) {
         return
     }
 
-    res.cookie(cookieName, cookieValue)
+    res.cookie(cookieName, cookieValue, { maxAge: 1000 * 60 * 60 * 24 * 365 })
     res.end()
 }
 module.exports.postLogin = postLogin

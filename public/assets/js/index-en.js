@@ -891,25 +891,27 @@ darkModeSwitch.onclick = () => {
 	}
 }
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-	if (e.matches && !document.body.classList.contains('dark')) {
-		darkModeSwitch.click()
-		return
-	}
-
-	if (!e.matches && document.body.classList.contains('dark')) {
-		darkModeSwitch.click()
-		return
-	}
-})
-
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-	if (window.localStorage.getItem('dark-mode') != 'false') {
-		darkModeSwitch.click()
-	}
-} else {
-	if (window.localStorage.getItem('dark-mode') == 'true') {
-		darkModeSwitch.click()
+if (window.matchMedia && window.matchMedia('').addEventListener) {
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+		if (e.matches && !document.body.classList.contains('dark')) {
+			darkModeSwitch.click()
+			return
+		}
+	
+		if (!e.matches && document.body.classList.contains('dark')) {
+			darkModeSwitch.click()
+			return
+		}
+	})
+	
+	if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		if (window.localStorage.getItem('dark-mode') != 'false') {
+			darkModeSwitch.click()
+		}
+	} else {
+		if (window.localStorage.getItem('dark-mode') == 'true') {
+			darkModeSwitch.click()
+		}
 	}
 }
 

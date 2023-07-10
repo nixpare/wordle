@@ -6,21 +6,17 @@ import (
 	"github.com/nixpare/server/v2"
 )
 
-const (
-	WORDLE_PROGRAM_NAME = "Wordle.js"
-)
-
 var (
 	PWM = server.Website {
 		Name: "PWM",
-		Dir: "C:/Program Files/PareServer/nixpare/pwm",
+		Dir: basedir,
 		MainPages: []string{"/"},
 		NoLogPages: []string{"/assets/"},
 	}
 )
 
 func PWMInit(srv *server.HTTPServer, domain *server.Domain, subdomain *server.Subdomain) error {
-	err := srv.Router.TaskManager.NewProcess(WORDLE_PROGRAM_NAME, PWM.Dir, "node", ".")
+	err := srv.Router.TaskManager.NewProcess(WORDLE_PROGRAM_NAME, basedir, "node", ".")
 	if err != nil {
 		return err
 	}

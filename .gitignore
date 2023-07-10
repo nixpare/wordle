@@ -1,2 +1,5 @@
 access.log
 .DS_Store
+
+# Config file for NixPare website
+config.go

@@ -1,6 +1,7 @@
 access.log
 .DS_Store
-node_modules/
+node_modules
+node_modules_bak
 
 # Config file for NixPare website
 config.go
